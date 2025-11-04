@@ -14,6 +14,10 @@ function MainContent() {
         Welcome to My Favorite Cities App
       </h2>
 
+      <p style={{ textAlign: 'center', color: 'gray', marginBottom: '20px' }}>
+        I love to visit New York, Paris, and Tokyo.
+      </p>
+
       <UserProfile name="Celine" age="29" bio="Loves coding and exploring new cities." />
       <UserProfile name="Jean" age="32" bio="Enjoys nature and good food." />
     </main>
