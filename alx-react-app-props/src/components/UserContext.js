@@ -1,3 +1,7 @@
-import { createContext } from "react";
+// src/UserContext.js
+import { createContext } from 'react';
 
-export const UserContext = createContext();
+// Create a new context for user data
+const UserContext = createContext();
+
+export default UserContext;
