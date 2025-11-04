@@ -1,10 +1,10 @@
 // src/UserInfo.jsx
-import UserDetails from './UserDetails';
+import UserProfile from './UserProfile';
 
 function UserInfo() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <UserDetails />
+      <UserProfile />
     </div>
   );
 }

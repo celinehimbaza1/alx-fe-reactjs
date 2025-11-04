@@ -1,8 +1,8 @@
-// src/UserDetails.jsx
+// src/UserProfile.jsx
 import { useContext } from 'react';
 import UserContext from './UserContext';
 
-function UserDetails() {
+function UserProfile() {
   const userData = useContext(UserContext);
 
   return (
@@ -17,7 +17,7 @@ function UserDetails() {
         textAlign: 'left',
       }}
     >
-      <h3 style={{ color: 'blue', textAlign: 'center' }}>User Details</h3>
+      <h3 style={{ color: 'blue', textAlign: 'center' }}>User Profile</h3>
       <p>
         <strong>Name:</strong> {userData.name}
       </p>
@@ -28,4 +28,4 @@ function UserDetails() {
   );
 }
 
-export default UserDetails;
+export default UserProfile;
