@@ -1,49 +1,35 @@
-// src/components/RecipeDetails.jsx
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useRecipeStore } from './recipeStore';
+import { useRecipeStore } from "./recipeStore";
+import EditRecipeForm from "./EditRecipeForm";
+import DeleteRecipeButton from "./DeleteRecipeButton";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
-export default function RecipeDetails() {
+const RecipeDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const recipe = useRecipeStore((s) =>
-    s.recipes.find((r) => r.id === id)
+  const recipeId = Number(id);
+
+  const recipe = useRecipeStore((state) =>
+    state.recipes.find((r) => r.id === recipeId)
   );
-  const deleteRecipe = useRecipeStore((s) => s.deleteRecipe);
 
-  if (!recipe) {
-    return (
-      <div>
-        <p>Recipe not found.</p>
-        <Link to="/">Back to list</Link>
-      </div>
-    );
-  }
+  const [editing, setEditing] = useState(false);
 
-  const handleDelete = () => {
-    // confirm delete
-    if (window.confirm('Delete this recipe?')) {
-      deleteRecipe(recipe.id);
-      navigate('/');
-    }
-  };
+  if (!recipe) return <p>Recipe not found</p>;
 
   return (
     <div>
       <h1>{recipe.title}</h1>
       <p>{recipe.description}</p>
 
-      <div style={{ marginTop: 12 }}>
-        <Link to={`/edit/${recipe.id}`} style={{ marginRight: 12 }}>
-          Edit
-        </Link>
-        <button onClick={handleDelete} style={{ padding: '6px 10px' }}>
-          Delete
-        </button>
-      </div>
+      <button onClick={() => setEditing(!editing)}>
+        {editing ? "Cancel" : "Edit"}
+      </button>
 
-      <div style={{ marginTop: 20 }}>
-        <Link to="/">Back to recipes</Link>
-      </div>
+      {editing && <EditRecipeForm recipe={recipe} onClose={() => setEditing(false)} />}
+
+      <DeleteRecipeButton recipeId={recipe.id} />
     </div>
   );
-}
+};
+
+export default RecipeDetails;
