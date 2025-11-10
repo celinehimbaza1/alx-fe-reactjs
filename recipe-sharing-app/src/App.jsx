@@ -1,15 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RecipeList from "./RecipeList";
-import RecipeDetails from "./RecipeDetails";
+import SearchBar from "./components/SearchBar";
+import RecipeList from "./components/RecipeList";
+import AddRecipeForm from "./components/AddRecipeForm";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RecipeList />} />
-        <Route path="/recipe/:id" element={<RecipeDetails />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <SearchBar />
+      <AddRecipeForm />
+      <RecipeList />
+    </div>
   );
 }
 
