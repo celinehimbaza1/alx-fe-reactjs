@@ -5,8 +5,10 @@ export const useRecipeStore = create((set) => ({
   recipes: [],
   favorites: [],
   recommendations: [],
+  searchTerm: "",
+  filteredRecipes: [],
 
-  // Setter required by ALX checker
+  // Required by ALX checker (from Task 1)
   setRecipes: (recipes) => set({ recipes }),
 
   // Recipe CRUD
@@ -45,8 +47,20 @@ export const useRecipeStore = create((set) => ({
   generateRecommendations: () =>
     set((state) => {
       const recommended = state.recipes.filter(
-        (recipe) => state.favorites.includes(recipe.id) && Math.random() > 0.5
+        (recipe) =>
+          state.favorites.includes(recipe.id) && Math.random() > 0.5
       );
       return { recommendations: recommended };
     }),
+
+  // 🔍 Search Handling
+  setSearchTerm: (term) =>
+    set({ searchTerm: term }),
+
+  filterRecipes: () =>
+    set((state) => ({
+      filteredRecipes: state.recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+      ),
+    })),
 }));
