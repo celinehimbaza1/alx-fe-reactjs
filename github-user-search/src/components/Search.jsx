@@ -31,20 +31,16 @@ function Search() {
       <form onSubmit={handleSubmit} className="mb-6">
         <input
           type="text"
-          className="border p-2 rounded w-full"
           placeholder="Enter GitHub username..."
+          className="border p-2 rounded w-full"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
       </form>
 
-      {/* Loading */}
       {loading && <p>Loading...</p>}
-
-      {/* Error */}
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* User Data */}
       {user && (
         <div className="mt-4 p-4 border rounded shadow bg-white">
           <img
