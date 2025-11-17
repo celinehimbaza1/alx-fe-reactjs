@@ -20,7 +20,7 @@ function Search() {
       const data = await fetchUserData(username);
       setUser(data);
     } catch (err) {
-      setError("Looks like we can’t find the user");
+      setError("Looks like we cant find the user");   // EXACT text required
     } finally {
       setLoading(false);
     }
@@ -29,13 +29,23 @@ function Search() {
   return (
     <div className="p-6">
       <form onSubmit={handleSubmit} className="mb-6">
+
         <input
           type="text"
           placeholder="Enter GitHub username..."
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full mb-4"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+
+        {/* REQUIRED BUTTON */}
+        <button
+          type="submit"
+          className="bg-blue-600 text-white p-2 rounded w-full"
+        >
+          Search
+        </button>
+
       </form>
 
       {loading && <p>Loading...</p>}
