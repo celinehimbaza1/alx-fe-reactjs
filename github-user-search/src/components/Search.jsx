@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { advancedSearchUsers } from "../services/githubService";
+import { fetchUserData, advancedSearchUsers } from "../services/githubService";
 
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -7,23 +7,41 @@ const Search = () => {
   const [minRepos, setMinRepos] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setError("");
+    setResults([]);
+    setLoading(true);
 
     try {
-      const users = await advancedSearchUsers(username, location, minRepos);
-      setResults(users);
+      let users = [];
+
+      if (username && !location && !minRepos) {
+        // Basic search using fetchUserData
+        const user = await fetchUserData(username);
+        users = [user];
+      } else {
+        // Advanced search using advancedSearchUsers
+        users = await advancedSearchUsers(username, location, minRepos);
+      }
+
+      if (!users || users.length === 0) {
+        setError("Looks like we cant find the user");
+      } else {
+        setResults(users);
+      }
     } catch {
-      setError("Looks like we can’t find the user");
+      setError("Looks like we cant find the user");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow rounded-xl">
       <form onSubmit={handleSearch} className="space-y-4">
-        {/* Username */}
         <input
           type="text"
           placeholder="Search username..."
@@ -32,7 +50,6 @@ const Search = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        {/* Location */}
         <input
           type="text"
           placeholder="Location (optional)"
@@ -41,7 +58,6 @@ const Search = () => {
           onChange={(e) => setLocation(e.target.value)}
         />
 
-        {/* Minimum repos */}
         <input
           type="number"
           placeholder="Minimum repositories (optional)"
@@ -58,16 +74,20 @@ const Search = () => {
         </button>
       </form>
 
-      {/* Error Message */}
+      {loading && <p className="mt-4">Loading...</p>}
       {error && <p className="text-red-600 mt-4">{error}</p>}
 
-      {/* Results */}
       <div className="mt-6 space-y-4">
         {results.map((user) => (
-          <div key={user.id} className="p-4 border rounded-lg flex items-center space-x-4">
+          <div
+            key={user.id}
+            className="p-4 border rounded-lg flex items-center space-x-4"
+          >
             <img src={user.avatar_url} alt="" className="w-12 h-12 rounded-full" />
             <div>
-              <p className="font-bold">{user.login}</p>
+              <p className="font-bold">{user.name || user.login}</p>
+              <p>{user.location || ""}</p>
+              <p>Repos: {user.public_repos || "N/A"}</p>
               <a
                 href={user.html_url}
                 target="_blank"
